@@ -1,9 +1,12 @@
 package com.avmathman.snowflake;
 
 import com.avmathman.snowflake.constants.Constants;
+import com.avmathman.snowflake.enums.KeyEnum;
 import com.avmathman.snowflake.utils.MachineUtils;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Implementation of logic for generating identification similar to
@@ -69,12 +72,29 @@ public class SnowflakeIdGenerator {
 
         lastTimestamp = currentTimestamp;
 
-        long id = currentTimestamp << (Constants.DATACENTER_ID_BITS + Constants.MACHINE_ID_BITS + Constants.SEQUENCE_BITS)
+        return currentTimestamp << (Constants.DATACENTER_ID_BITS + Constants.MACHINE_ID_BITS + Constants.SEQUENCE_BITS)
                 | this.datacenterId << (Constants.MACHINE_ID_BITS + Constants.SEQUENCE_BITS)
                 | this.machineId << (Constants.SEQUENCE_BITS)
                 | this.sequence;
+    }
 
-        return id;
+    public Map<KeyEnum, Long> parse(long id) {
+        long maskDatacenterId = ((1L << Constants.DATACENTER_ID_BITS) - 1) << (Constants.MACHINE_ID_BITS + Constants.SEQUENCE_BITS);
+        long maskMachineId = ((1L << Constants.MACHINE_ID_BITS) - 1) << Constants.SEQUENCE_BITS;
+        long maskSequence = 1L << Constants.SEQUENCE_BITS - 1;
+
+        long timestamp = (id >> (Constants.DATACENTER_ID_BITS + Constants.MACHINE_ID_BITS + Constants.SEQUENCE_BITS)) + this.epoch;
+        long datacenterId = (id & maskDatacenterId) >> (Constants.MACHINE_ID_BITS + Constants.SEQUENCE_BITS);
+        long machineId = (id & maskMachineId) >> Constants.SEQUENCE_BITS;
+        long sequence = id & maskSequence;
+
+        Map<KeyEnum, Long> result = new HashMap<>();
+        result.put(KeyEnum.TIMESTAMP, timestamp);
+        result.put(KeyEnum.DATACENTER, datacenterId);
+        result.put(KeyEnum.MACHINE, machineId);
+        result.put(KeyEnum.SEQUENCE, sequence);
+
+        return result;
     }
 
     private long timestamp() {
