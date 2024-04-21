@@ -1,4 +1,4 @@
-package com.avmathman.constants;
+package com.avmathman.snowflake.constants;
 
 public class Constants {
     public static final long DEFAULT_EPOCH = 1420070400000L;

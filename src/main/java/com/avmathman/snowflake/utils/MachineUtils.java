@@ -1,6 +1,6 @@
-package com.avmathman.utils;
+package com.avmathman.snowflake.utils;
 
-import com.avmathman.constants.Constants;
+import com.avmathman.snowflake.constants.Constants;
 
 import java.net.NetworkInterface;
 import java.security.SecureRandom;

@@ -1,7 +1,7 @@
-package com.avmathman;
+package com.avmathman.snowflake;
 
-import com.avmathman.constants.Constants;
-import com.avmathman.utils.MachineUtils;
+import com.avmathman.snowflake.constants.Constants;
+import com.avmathman.snowflake.utils.MachineUtils;
 
 import java.time.Instant;
 
@@ -19,7 +19,7 @@ public class SnowflakeIdGenerator {
 
     private MachineUtils machineUtils;
 
-    SnowflakeIdGenerator(long datacenterId, long machineId, long epoch) {
+    public SnowflakeIdGenerator(long datacenterId, long machineId, long epoch) {
         if (this.machineId < 0 || this.machineId > Constants.MAX_MACHINE_ID) {
             throw new IllegalArgumentException(String.format("MachineId must be between %d and %d", 0, Constants.MAX_MACHINE_ID));
         }
@@ -32,15 +32,15 @@ public class SnowflakeIdGenerator {
         this.epoch = epoch;
     }
 
-    SnowflakeIdGenerator(long datacenterId, long machineId) {
+    public SnowflakeIdGenerator(long datacenterId, long machineId) {
         this(datacenterId, machineId, Constants.DEFAULT_EPOCH);
     }
 
-    SnowflakeIdGenerator(long machineId) {
+    public SnowflakeIdGenerator(long machineId) {
         this(Constants.DEFAULT_DATACENTER_ID, machineId, Constants.DEFAULT_EPOCH);
     }
 
-    SnowflakeIdGenerator() {
+    public SnowflakeIdGenerator() {
         this.machineUtils = new MachineUtils();
 
         this.machineId = this.machineUtils.createMachineId();
