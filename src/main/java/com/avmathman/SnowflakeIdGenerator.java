@@ -1,6 +1,7 @@
 package com.avmathman;
 
 import com.avmathman.constants.Constants;
+import com.avmathman.utils.MachineUtils;
 
 import java.time.Instant;
 
@@ -15,6 +16,8 @@ public class SnowflakeIdGenerator {
 
     private volatile long lastTimestamp = -1L;
     private volatile long sequence = 0L;
+
+    private MachineUtils machineUtils;
 
     SnowflakeIdGenerator(long datacenterId, long machineId, long epoch) {
         if (this.machineId < 0 || this.machineId > Constants.MAX_MACHINE_ID) {
@@ -35,6 +38,14 @@ public class SnowflakeIdGenerator {
 
     SnowflakeIdGenerator(long machineId) {
         this(Constants.DEFAULT_DATACENTER_ID, machineId, Constants.DEFAULT_EPOCH);
+    }
+
+    SnowflakeIdGenerator() {
+        this.machineUtils = new MachineUtils();
+
+        this.machineId = this.machineUtils.createMachineId();
+        this.datacenterId = Constants.DEFAULT_DATACENTER_ID;
+        this.epoch = Constants.DEFAULT_EPOCH;
     }
 
     public synchronized long nextId() {

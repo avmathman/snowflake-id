@@ -7,8 +7,8 @@ import java.security.SecureRandom;
 import java.util.Enumeration;
 
 public class MachineUtils {
-    public long createNodeId() {
-        long nodeId;
+    public long createMachineId() {
+        long machineId;
         try {
             StringBuilder sb = new StringBuilder();
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
@@ -21,11 +21,11 @@ public class MachineUtils {
                     }
                 }
             }
-            nodeId = sb.toString().hashCode();
+            machineId = sb.toString().hashCode();
         } catch (Exception ex) {
-            nodeId = (new SecureRandom().nextInt());
+            machineId = (new SecureRandom().nextInt());
         }
-        nodeId = nodeId & Constants.MACHINE_ID_BITS;
-        return nodeId;
+        machineId = machineId & Constants.MACHINE_ID_BITS;
+        return machineId;
     }
 }
