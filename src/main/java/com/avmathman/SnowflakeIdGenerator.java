@@ -48,7 +48,7 @@ public class SnowflakeIdGenerator {
         this.epoch = Constants.DEFAULT_EPOCH;
     }
 
-    public synchronized long nextId() {
+    public synchronized long generate() {
         long currentTimestamp = this.timestamp();
 
         if(currentTimestamp < lastTimestamp) {
